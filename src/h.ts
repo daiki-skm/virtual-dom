@@ -1,4 +1,4 @@
-import type { VirtualNodeType, KeyAttribute } from "./types";
+import type { VirtualNodeType } from "./types";
 
 export const createVNode = (
   name: VirtualNodeType["name"],
@@ -6,7 +6,7 @@ export const createVNode = (
   children: VirtualNodeType["children"],
   realNode?: VirtualNodeType["realNode"],
   nodeType?: VirtualNodeType["nodeType"],
-  key?: KeyAttribute
+  key?: VirtualNodeType["key"]
 ): VirtualNodeType => {
   return {
     name,
