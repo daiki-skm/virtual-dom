@@ -53,14 +53,12 @@ const renderTextNode = (
     if (typeof newVNode.name === "string") {
       realNode.nodeValue = newVNode.name;
       return realNode;
-    } else {
-      console.error("Error!");
-      return realNode;
     }
-  } else {
     console.error("Error!");
     return realNode;
   }
+  console.error("Error!");
+  return realNode;
 };
 
 const renderNode = (
@@ -100,6 +98,7 @@ const renderNode = (
         }
       }
       const renderedNewChildren: { [key in KeyAttribute]: "isRendered" } = {};
+
       while (newChildNowIndex < newChildrenLength) {
         let oldChildVNode: VirtualNodeType | null;
         let oldKey: string | number | null;
@@ -207,10 +206,12 @@ const renderNode = (
       console.error("Error!");
     }
   }
+
   if (realNode !== null) {
     newVNode.realNode = realNode;
     realNode.vdom = newVNode;
   }
+
   return realNode;
 };
 
@@ -230,10 +231,13 @@ const patchProperty = (
   if (propName === "key") {
   } else if (propName[0] === "o" && propName[1] === "n") {
     const eventName = propName.slice(2).toLowerCase();
+
     if (realNode.eventHandlers === undefined) {
       realNode.eventHandlers = {};
     }
+
     realNode.eventHandlers[eventName] = newPropValue;
+
     if (
       newPropValue === null ||
       newPropValue === undefined ||
@@ -279,13 +283,13 @@ const createRealNodeFromVNode = (VNode: VirtualNodeType) => {
   return realNode;
 };
 
-const mergeProperties = (oldProps: DOMAttributes, newProp: DOMAttributes) => {
+const mergeProperties = (oldProps: DOMAttributes, newProps: DOMAttributes) => {
   const mergeProperties: DOMAttributes = {};
   for (const propName in oldProps) {
     mergeProperties[propName] = oldProps[propName];
   }
-  for (const propName in newProp) {
-    mergeProperties[propName] = newProp[propName];
+  for (const propName in newProps) {
+    mergeProperties[propName] = newProps[propName];
   }
   return mergeProperties;
 };
@@ -326,14 +330,17 @@ export const render = (
 ) => {
   if (realNode.parentElement !== null) {
     let oldVNode: VirtualNodeType | null;
+
     const vNodeFromRealElement = createVNodeFromRealElement(realNode);
     if (realNode.vdom === undefined) {
       oldVNode = { ...vNodeFromRealElement };
     } else {
       oldVNode = realNode.vdom;
     }
+
     vNodeFromRealElement.children = [newVNode];
     newVNode = vNodeFromRealElement;
+
     renderNode(realNode.parentElement, realNode, oldVNode, newVNode);
   } else {
     console.error("Error!");

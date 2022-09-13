@@ -40,6 +40,7 @@ export const h = (
       VNodeChildren.push(child);
     }
   }
+
   const thisVNode = createVNode(
     name,
     props,
@@ -48,5 +49,6 @@ export const h = (
     null,
     props.key
   );
+
   return thisVNode;
 };
