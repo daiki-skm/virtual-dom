@@ -1,23 +1,41 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import { setupCounter } from './counter'
+import "./style.css";
+import typescriptLogo from "./typescript.svg";
+import { setupCounter } from "./counter";
+import { h } from "./h";
+import { render } from "./render";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+interface HTMLElementEvent<T extends HTMLElement> extends Event {
+  target: T;
+}
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+const setState = (state: string) => {
+  const node = document.querySelector<HTMLDivElement>("#app");
+  const createKeyList = () => {
+    return state.split(" ").map((value: string) => {
+      return h("div", { key: value }, [`key: ${value}`]);
+    });
+  };
+
+  if (node !== null) {
+    render(
+      node,
+      h("div", {}, [
+        h("h1", {}, [state]),
+        h(
+          "input",
+          {
+            type: "text",
+            value: state,
+            oninput: (e: HTMLElementEvent<HTMLInputElement>) =>
+              setState(e.target.value),
+            autofocus: true,
+          },
+          []
+        ),
+        h("div", { id: "container" }, createKeyList()),
+      ])
+    );
+  }
+};
+
+setState("Hey");
