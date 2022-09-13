@@ -1,6 +1,6 @@
 type KeyAttribute = string | number;
 
-type DOMAttributeName = "hey" | string;
+type DOMAttributeName = "key" | string;
 
 interface DOMAttributes {
   key?: KeyAttribute;
