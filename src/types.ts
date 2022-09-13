@@ -1,7 +1,5 @@
 type KeyAttribute = string | number;
 
-type DOMAttributeName = "key" | string;
-
 interface DOMAttributes {
   key?: KeyAttribute;
   [prop: string]: any;
@@ -9,15 +7,6 @@ interface DOMAttributes {
 
 interface HandlersType {
   [eventName: string]: (event: Event) => void;
-}
-
-interface VirtualNodeType {
-  name: HTMLElementTagNameMap | string;
-  props: DOMAttributes;
-  children: VirtualNodeType[];
-  realNode: ExpandElement | null;
-  nodeType: Node["TEXT_NODE"] | null;
-  key: KeyAttribute | null;
 }
 
 type ElementAttachedNeedAttr = HTMLElement & {
@@ -31,13 +20,24 @@ type TextAttachedVDOM = Text & {
 
 type ExpandElement = ElementAttachedNeedAttr | TextAttachedVDOM;
 
+interface VirtualNodeType {
+  name: HTMLElementTagNameMap | string;
+  props: DOMAttributes;
+  children: VirtualNodeType[];
+  realNode: ExpandElement | null;
+  nodeType: Node["TEXT_NODE"] | null;
+  key: KeyAttribute | null;
+}
+
+type DOMAttributeName = "key" | string;
+
 export type {
   KeyAttribute,
-  DOMAttributeName,
   DOMAttributes,
   HandlersType,
-  VirtualNodeType,
   ElementAttachedNeedAttr,
   TextAttachedVDOM,
   ExpandElement,
+  VirtualNodeType,
+  DOMAttributeName,
 };
